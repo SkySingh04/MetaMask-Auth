@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ethers } from 'ethers';
+import { toast , ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const Page = () => {
@@ -9,13 +11,21 @@ const Page = () => {
 
     async function handleMetaMaskLogin() {
         if (!isMetaMaskInstalled) {
-            alert('Please install MetaMask to continue');
+            toast.error('Please install MetaMask to continue');
             return;
         }
+        try{
         const provider = new ethers.providers.Web3Provider((window as any).ethereum);
+        await provider.send("eth_requestAccounts", []); 
         const signer = provider.getSigner();
         const address = await signer.getAddress();
         console.log(address);
+        toast.success("Logged in with metamask");
+        toast.info("Your address is " + address);
+        }
+        catch(e){
+            toast.error("Failed to login with metamask");
+        }
     }
 
     useEffect(() => {
@@ -24,6 +34,7 @@ const Page = () => {
 
     return (
         <div className="container mx-auto text-center mt-8">
+            <ToastContainer autoClose={false} theme="dark"  />
             <h1 className="text-3xl font-bold mb-6">Welcome, Please Select an option below to continue</h1>
             <div className="flex justify-center">
                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-5" onClick={handleMetaMaskLogin}>Login With Metamask</button>
