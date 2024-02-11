@@ -22,6 +22,51 @@ const Page = () => {
         console.log(address);
         toast.success("Logged in with metamask");
         toast.info("Your address is " + address);
+
+        const respose = await fetch("/api/nonce", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ address }),
+        });
+
+        if (!respose.ok) {
+            const error = await respose.json();
+            toast.error(error.message);
+            return;
+        }
+        const { nonce } = await respose.json();
+        console.log(nonce);
+        toast.success("Nonce generated successfully: " + nonce);
+
+        const signedNonce = await signer.signMessage(nonce);
+        console.log(signedNonce);
+        toast.success("Nonce signed successfully: " + signedNonce);
+
+        const data ={signedNonce , nonce , address};
+        const response = await fetch("/api/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            toast.error(error.message);
+            return;
+        }
+        const { token } = await response.json();
+        if (!response.ok){
+            const error = await response.json();
+            toast.error(error.message);
+            return;
+        }
+        console.log(token);
+        toast.success("Logged in successfully with token: " + token);
+        localStorage.setItem("address", token);
         }
         catch(e){
             toast.error("Failed to login with metamask");

@@ -24,7 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         const blockChainAddress = wallet.address;
         const blockChainPrivateKey = wallet.privateKey;
 
-        const newUser = {
+        const newUser:User = {
             name,
             email,
             blockChainAddress,
