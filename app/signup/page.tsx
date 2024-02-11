@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const Page = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [privateKey, setPrivateKey] = useState(null);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -21,16 +22,19 @@ const Page = () => {
     const data = await response.json();
     if (response.ok) {
       toast.success('User created successfully');
-      toast.info("Private key is" + data.message);
+      toast.info("Private key is\n" + data.message);
+      setPrivateKey(data.message);
     } else {
-      toast.error('Error creating user' + data.message);
+      toast.error('Error creating user!\n' + data.message);
     }
     console.log(data);
   };
   return (
     <div className="container mx-auto text-center mt-8 ">
+    <ToastContainer autoClose={false} theme="dark"  />
       <h1 className="text-3xl font-bold mb-6">Sign up </h1>
-      <div className="flex justify-center">
+      {privateKey && <h1 className="text-red-500">Your private key is {privateKey}</h1>}
+      <div className="flex justify-center items-center h-[100vh]">
         <form onSubmit={handleSubmit} className="bg-gray-900 p-10 border-amber-200 border">
           <label htmlFor="name" className="m-2">
             Name

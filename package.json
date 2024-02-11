@@ -11,7 +11,7 @@
   "dependencies": {
     "crypto": "^1.0.1",
     "ethers": "^5.7.1",
-    "mongodb": "^6.3.0",
+    "firebase": "^10.8.0",
     "mongoose": "^8.1.1",
     "next": "14.1.0",
     "react": "^18",
