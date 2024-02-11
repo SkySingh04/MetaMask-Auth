@@ -66,7 +66,7 @@ const Page = () => {
         console.log(token);
         toast.success("Logged in successfully with token: " + token);
         localStorage.setItem(address, token);
-        // window.location.href = "/protected";
+        window.location.href = "/protected";
         }
         catch(e){
             toast.error("Failed to login with metamask");
